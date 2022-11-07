@@ -1,0 +1,443 @@
+<!DOCTYPE html><html lang="zh-cn" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>指针详解1 | Chauity の 筆 卷</title><meta name="author" content="ZhiQiang ZHANG"><meta name="copyright" content="ZhiQiang ZHANG"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="指针的基本概念1）变量的地址变量是内存变量的简称，在C++中，系统会给变量分配一块内存，内存是有地址的。    0x00000001    0x00000002   0x00000003   0x00000004   0x00000005   0x00000006   0x00000007   0x00000008   0x00000009   0x00000010   0x0000000A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="指针详解1">
+<meta property="og:url" content="https://chauity.github.io/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/index.html">
+<meta property="og:site_name" content="Chauity の 筆 卷">
+<meta property="og:description" content="指针的基本概念1）变量的地址变量是内存变量的简称，在C++中，系统会给变量分配一块内存，内存是有地址的。    0x00000001    0x00000002   0x00000003   0x00000004   0x00000005   0x00000006   0x00000007   0x00000008   0x00000009   0x00000010   0x0000000A">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg">
+<meta property="article:published_time" content="2022-11-03T04:24:18.000Z">
+<meta property="article:modified_time" content="2022-11-04T12:30:49.857Z">
+<meta property="article:author" content="ZhiQiang ZHANG">
+<meta property="article:tag" content="关于指针的一些事儿">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg"><link rel="shortcut icon" href="https://cdn.staticaly.com/gh/chauity/images@master/20221104091410.jpg"><link rel="canonical" href="https://chauity.github.io/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁体","msgToSimplifiedChinese":"簡體"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":100},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '指针详解1',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: true,
+  isToc: true,
+  postUpdate: '2022-11-04 20:30:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Chauity の 筆 卷" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+
+if (false) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/null" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Chauity の 筆 卷</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">指针详解1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-11-03T04:24:18.000Z" title="Created 2022-11-03 12:24:18">2022-11-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-11-04T12:30:49.857Z" title="Updated 2022-11-04 20:30:49">2022-11-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="指针详解1"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="指针的基本概念"><a href="#指针的基本概念" class="headerlink" title="指针的基本概念"></a>指针的基本概念</h2><h3 id="1）变量的地址"><a href="#1）变量的地址" class="headerlink" title="1）变量的地址"></a>1）变量的地址</h3><p>变量是内存变量的简称，在C++中，系统会给变量分配一块内存，内存是有地址的。</p>
+<table>
+<thead>
+<tr>
+<th align="center">0x00000001</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">0x00000002</td>
+</tr>
+<tr>
+<td align="center">0x00000003</td>
+</tr>
+<tr>
+<td align="center">0x00000004</td>
+</tr>
+<tr>
+<td align="center">0x00000005</td>
+</tr>
+<tr>
+<td align="center">0x00000006</td>
+</tr>
+<tr>
+<td align="center">0x00000007</td>
+</tr>
+<tr>
+<td align="center">0x00000008</td>
+</tr>
+<tr>
+<td align="center">0x00000009</td>
+</tr>
+<tr>
+<td align="center">0x00000010</td>
+</tr>
+<tr>
+<td align="center">0x0000000A</td>
+</tr>
+<tr>
+<td align="center">0x0000000B</td>
+</tr>
+<tr>
+<td align="center">……</td>
+</tr>
+<tr>
+<td align="center">0xFFFFFFFF</td>
+</tr>
+</tbody></table>
+<p>C++用运算符&amp;获取变量在内存中的起始地址。</p>
+<p>语法：<code>&amp;变量名</code></p>
+<h3 id="2-指针变量"><a href="#2-指针变量" class="headerlink" title="2)指针变量"></a>2)指针变量</h3><p>指针变量简称指针，他是一种特殊的变量，专用于存放变量在内存中的<strong>起始地址</strong>。</p>
+<p>语法：<code>数据类型 *变量名;</code></p>
+<p>数据类型必须是合法的C++数据类型（int、char、double或其他自定义数据类型）。</p>
+<p>星号*与乘法中的星号是相同的，但是，在这个场景中，星号用于表示这个变量是指针。</p>
+<h3 id="3）对指针赋值"><a href="#3）对指针赋值" class="headerlink" title="3）对指针赋值"></a>3）对指针赋值</h3><p>不管是整型、浮点型、字符型，还是其他数据类型的变量，它的地址都是一个十六进制数。我们用整型指针存放整型变量的地址，用字符型指针存放字符型变量的地址，用浮点型指针存放浮点型变量的地址，用自定义数据类型指针存放自定义数据类型变量的地址。</p>
+<p>语法：<code>指针=&amp;变量名;</code></p>
+<h3 id="4-指针占用的内存"><a href="#4-指针占用的内存" class="headerlink" title="4)指针占用的内存"></a>4)指针占用的内存</h3><p>指针也是变量，是变量就要占用内存空间。</p>
+<p>在64位操作系统中，不管什么类型的指针，占用内存都是8字节。</p>
+<p>在C++中，指针是复合数据类型，复合数据类型是指基于其他类型而定义的数据类型，在程序中，int是整型变量，int *是整型指针类型，int *可以用于sizeof运算符，可以用于数据类型的强制转换，总的来说，把int *当成一种数据类型就对了。</p>
+<h2 id="使用指针"><a href="#使用指针" class="headerlink" title="使用指针"></a>使用指针</h2><p>声明变量后，在没有赋值之前，里面是乱七八糟的值，这时候不能使用指针。</p>
+<p>指针存放变量的地址，因此，指针名表示的是地址（就像变量名可以表示变量的值一样）。</p>
+<p><em>运算符被称为<strong>间接值</strong>或<strong>解除引用（解引用）</strong>，将它用于指针，可以的得到该地址的内存中存储的值，</em>也是乘法符号，C++根据上下文来确定所指的是乘法还是解引用。</p>
+<p>变量和指向变量的指针就像同一枚硬币的两面。</p>
+<p><code>int no = 38;</code></p>
+<p><code>int *ptr = &amp;no;</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/ZZQPHPGIT/images/20221025104337.png"></p>
+<p>程序在存储数据的时候，必须跟踪三种基本属性：</p>
+<ul>
+<li>程序存储在哪里；</li>
+<li>数据是什么类型；</li>
+<li>数据的值是多少。</li>
+</ul>
+<p>用两种策略可以达到以上目的；</p>
+<p>声明一个普通变量，声明时指出数据类型和变量名（符号名），系统在内部跟踪该内存单元。</p>
+<p>声明一个指针变量，存储的值是地址，而不是值本身，程序直接访问该内存单元。</p>
+<h2 id="指针用于函数的参数"><a href="#指针用于函数的参数" class="headerlink" title="指针用于函数的参数"></a>指针用于函数的参数</h2><p>如果把函数的形参声明为指针，调用的时候把实参地址传进去，形参中存放的是实参的地址，在函数中</p>
+<p>通过解引用的方法直接操作内存中的数据，可以修改实数的值，这种方法被通俗的称为<strong>地址传递</strong>或<strong>传地址</strong>。</p>
+<p><strong>值传递</strong>：函数的形参是普通变量。</p>
+<p>传地址的意义如下：</p>
+<ul>
+<li>可以在函数中修改实参的值。</li>
+<li>减少内存拷贝，提升性能。</li>
+</ul>
+<h2 id="使用常量"><a href="#使用常量" class="headerlink" title="使用常量"></a>使用常量</h2><p>常量是程序中固定不变的数据。</p>
+<h3 id="1）宏常量"><a href="#1）宏常量" class="headerlink" title="1）宏常量"></a>1）宏常量</h3><p>一般在 main 函数的上面声明，用大写命名。</p>
+<p>语法：<code>#define 常量名 值</code></p>
+<h3 id="2）const修饰的变量"><a href="#2）const修饰的变量" class="headerlink" title="2）const修饰的变量"></a>2）const修饰的变量</h3><p>在程序的任何地方都可以声明。</p>
+<p>语法：<code>const 数据类型 常量名 = 值</code></p>
+<h3 id="3-常量的特点"><a href="#3-常量的特点" class="headerlink" title="3)常量的特点"></a>3)常量的特点</h3><p>程序中不允许改变常量的值，否则编译的时候会报错。</p>
+<h3 id="4）示例"><a href="#4）示例" class="headerlink" title="4）示例"></a>4）示例</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span>    <span class="comment">//包含头文件</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MONTHS 12           <span class="comment">//一年中的月份数</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PI     3.14159      <span class="comment">//圆周率</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;        <span class="comment">//指定缺省的命名空间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//main函数u，程序从这里开始执行，每个程序只能有一个 main 函数。</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">const</span> days = <span class="number">7</span>;        <span class="comment">//一星期的天数</span></span><br><span class="line"></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;一年有&quot;</span> &lt;&lt; MONTHS &lt;&lt; <span class="string">&quot;个月&quot;</span> &lt;&lt; endl;</span><br><span class="line"></span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<h2 id="用const修饰指针"><a href="#用const修饰指针" class="headerlink" title="用const修饰指针"></a>用const修饰指针</h2><h3 id="1）常量指针"><a href="#1）常量指针" class="headerlink" title="1）常量指针"></a>1）常量指针</h3><p>语法：<code>const 数据类型 *变量名;</code></p>
+<p>不能通过解引用的方法修改内存地址中的值（用原始的变量名是可以修改的）。</p>
+<p>注意：</p>
+<ul>
+<li>指向的变量（对象）可以改变（之前是指向变量a的，后来可以改为指向变量b）。</li>
+<li>一般用于修饰函数的形参，表示不希望在函数里修改内存地址中的值。</li>
+<li>如果用于形参、虽然指向的对象可以改变，但那么做没有任何意义。</li>
+<li>如果形参的值不需要改变，建议加上const修饰，程序可读性更好。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">3</span>, b = <span class="number">8</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span>* p = &amp;a;</span><br><span class="line"><span class="comment">//不能通过解引用赋值修改值，编译会报错 错误  C3892</span></span><br><span class="line"><span class="comment">//*p = 13;</span></span><br><span class="line"><span class="comment">//只能通过变量修改值</span></span><br><span class="line">a = <span class="number">13</span>;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;a=&quot;</span> &lt;&lt; a &lt;&lt; <span class="string">&quot;,*p=&quot;</span> &lt;&lt; *p &lt;&lt; endl;</span><br><span class="line">p = &amp;b;</span><br><span class="line">cout &lt;&lt; <span class="string">&quot;b=&quot;</span> &lt;&lt; b &lt;&lt; <span class="string">&quot;,*p=&quot;</span> &lt;&lt; *p &lt;&lt; endl;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(<span class="type">const</span> <span class="type">int</span>* no,<span class="type">const</span> string *str)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//参数加上const，解引用赋值,编译时 同样会报错</span></span><br><span class="line">    <span class="comment">//*no = 8;</span></span><br><span class="line">    <span class="comment">//*str = &quot;我有一只小小鸟.&quot;;</span></span><br><span class="line">    cout &lt;&lt; <span class="string">&quot;亲爱的&quot;</span> &lt;&lt; *no &lt;&lt; <span class="string">&quot;号&quot;</span> &lt;&lt; *str &lt;&lt; endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-指针常量"><a href="#2-指针常量" class="headerlink" title="2)指针常量"></a>2)指针常量</h3><p>语法：<code>数据类型 *const 变量名;</code></p>
+<p>指向的变量（对象）不可改变。</p>
+<p>注意：</p>
+<ul>
+<li>在定义的同时必须初始化，否则没有意义。</li>
+<li>可以通过解引用的方法修改内存地址中的值。</li>
+<li>C++编译器把指针常量做了一些特别的处理，改投换面之后，有了一个新的名字，叫做引用。</li>
+</ul>
+<h3 id="3）常指针常量"><a href="#3）常指针常量" class="headerlink" title="3）常指针常量"></a>3）常指针常量</h3><p>语法：<code>const 数据类型 *const 变量名;</code></p>
+<p>指向的变量（对象）不可改变，不能通过解引用的方法修改内存地址中的值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//常指针常量</span></span><br><span class="line"><span class="type">int</span> a = <span class="number">3</span>,b = <span class="number">8</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span>* <span class="type">const</span> pa = &amp;a;</span><br><span class="line"><span class="comment">//既不能改变指针指向，也不能解引用改变值，下列两种写法都是错误的</span></span><br><span class="line"><span class="comment">//*pa = 13;</span></span><br><span class="line"><span class="comment">//pa = &amp;b;</span></span><br></pre></td></tr></table></figure>
+
+<p>常量指针：指针指向可以改，指针指向的值不可以改。</p>
+<p>指针常量：指针指向不可以改，指针的指向的值可以更改。</p>
+<p>常指针常量：指针指向不可以改，指针指向的值不可以更改。</p>
+<h2 id="void-关键字"><a href="#void-关键字" class="headerlink" title="void 关键字"></a>void 关键字</h2><p>在C++中，void表示为<strong>无类型</strong>，主要有三个用途：</p>
+<ul>
+<li><p>函数的返回值使用 <code>void</code> ，表示函数没有返回值。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span> <span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="comment">//函数体代码</span></span><br><span class="line">     <span class="keyword">return</span>;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>函数的参数填 <code>void</code> ，表示函数不需要参数（或者让参数列表空着）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">func</span><span class="params">( <span class="type">void</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//函数体代码</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>函数的形参用 <code>void *</code>，表示接受任意数据类型的指针。</p>
+<p>注意：</p>
+<ul>
+<li>不能用 <code>void</code>声明变量，它不能代表一个真实的变量。</li>
+<li>不能对 <code>void *</code>指针直接解引用（需要转化为其他类型的指针）。</li>
+<li>把其他类型的指针赋值给 <code>void *</code>指针不需要转换。</li>
+<li>把 <code>void *</code>指针赋值给其他类型的指针需要转换。</li>
+</ul>
+</li>
+</ul>
+<h2 id="动态分配内存new和delete"><a href="#动态分配内存new和delete" class="headerlink" title="动态分配内存new和delete"></a>动态分配内存new和delete</h2><p>C++内存空间</p>
+<p><img src="https://cdn.jsdelivr.net/gh/ZZQPHPGIT/images/20221025192803.png"></p>
+<p>使用堆区内存有四个步骤：</p>
+<p>1）声明一个指针；</p>
+<p>2）用new运算符向系统申请一块内存，让指针指向这块内存；</p>
+<p>3）通过对指针的解引用的方法，像使用变量一样使用这块内存；</p>
+<p>4）如果这块内存不用了，用delete运算符释放它；</p>
+<p>申请内存的语法：<code>new 数据类型(初始值);</code> //C++11支持 {}</p>
+<p>如果申请成功，返回一个地址；如果申请失败，返回一个空地址（暂时不考虑失败的情况）</p>
+<p>是否内存的语法：<code>delete 地址;</code></p>
+<p>注意：</p>
+<ul>
+<li>动态分配出来的内存没有变量名，只能通过指向它的指针来操作内存中的数据。</li>
+<li>如果动态分配的内存用不了，必须使用 <code>delete</code>释放它，否则可能用尽系统的内存。</li>
+<li>动态分配的内存的生命周期与程序相同，程序退出时，如果没有是否，系统将自动回收。</li>
+<li>就算指针的作用域已失效，所指向的内存也不会释放。</li>
+<li>用指针跟踪已分配的内存时，不能跟丢。</li>
+</ul>
+<h2 id="二级指针"><a href="#二级指针" class="headerlink" title="二级指针"></a>二级指针</h2><p><strong>指针</strong>是<strong>指针变量</strong>的简称，也是<strong>变量</strong>。是<strong>变量</strong>就有<strong>地址</strong>。</p>
+<p><strong>指针</strong>用于存放<strong>普通变量</strong>的<strong>地址</strong>。</p>
+<p><strong>二级指针</strong>用于存放<strong>指针变量</strong>的<strong>地址</strong>。</p>
+<p>声明<strong>二级指针</strong>的语法：<code>数据类型** 指针名;</code></p>
+<p>使用指针有两个目的：1）传递地址；2）存放动态分配的内存的地址。</p>
+<p>在函数中，如果传递普通变量的地址，形参用指针；<strong>传递指针的地址，形参用二级指针</strong>。</p>
+<h2 id="空指针"><a href="#空指针" class="headerlink" title="空指针"></a>空指针</h2><p>在C++和C中，用0或NULL都可以表示空指针。</p>
+<p>声明指针后，在赋值之前，让它指向空，表示没有任何地址。</p>
+<h3 id="1）使用空指针的后果"><a href="#1）使用空指针的后果" class="headerlink" title="1）使用空指针的后果"></a>1）使用空指针的后果</h3><p><strong>如果对空指针解引用，程序会崩溃。</strong></p>
+<p><strong>如果对空指针使用delete运算符，系统忽略该操作，不会出现异常。所以内存释放后，也应该把指针指向空。</strong></p>
+<p>为什么空指针访问会出现异常？</p>
+<p>NULL指针分配的分区：其范围是从 <code>0x00000000</code>到 <code>0x0000FFFF</code>。这段代码是空闲的，对于空闲的空间而言，没有相对应的物理存储器，与之相对应，所以对这段代码来说，任何读写操作都会引起异常的。空指针是程序无论在核实都没有物理存储器与之相对应的地址。为了保障“无论何时”这个条件，需要人为划分一个空指针的区域，固有上面NULL指针分区。</p>
+<h3 id="2）C-11的nullptr"><a href="#2）C-11的nullptr" class="headerlink" title="2）C++ 11的nullptr"></a>2）C++ 11的nullptr</h3><p>用0和NULL表示空指针会产生歧义，C++11建议用 <code>nullptr</code>表示空指针，也就是 <code>（void *）0</code>。</p>
+<p>NULL在C++中就是0，这是因为在C++中 <code>void *</code> 类型是不允许隐式转换成其他类型的，所以之前C++中用0来代表空指针，但是在重载整型的情况下，会出现上述的问题。所以C++11加入了nullptr，可以保证在任何情况下都代表空指针，而不会出现上述的情况，因此，建议用nullptr替代NULL，而NULL就当做0使用。</p>
+<p><strong>注意：在Linux平台下，如果使用nullptr，编译要加 <code>-std=c++11</code>参数</strong></p>
+<h2 id="野指针"><a href="#野指针" class="headerlink" title="野指针"></a>野指针</h2><p>野指针就是指针指向的不是一个有效（合法）的地址。</p>
+<p>在程序中，如果访问野指针，<strong>可能</strong>会造成程序的崩溃。</p>
+<p>出现野指针的情况主要有三种：</p>
+<ul>
+<li>1）指针在定义的时候，如果没有初始化，它的值是不确定的（乱指一气）。</li>
+<li>2）如果指针指向了动态分配的内存，内存被释放后，指针不会置空，但是，指向的指针已失效。</li>
+<li>3）指针指向的变量超越变量的作用域（变量的内存空间已被回收），作用域指的是是局部变量还是全局变量。</li>
+</ul>
+<p>规避方法：</p>
+<ul>
+<li><p>1）指针在定义的时候，如果没地方指，就初始化为nullptr。</p>
+</li>
+<li><p>2）动态分配的内存释放后，将其置位nullptr。</p>
+</li>
+<li><p>3）函数不要返回局部变量的地址。</p>
+<p>注意：野指针的危害比空指针要大很多，如果访问野指针，<strong>可能</strong>会造成程序的崩溃。是可能，表示一定，程序的表现是<strong>不稳定</strong>，增加了调试的难度。</p>
+</li>
+</ul>
+<h2 id="一维数组与指针"><a href="#一维数组与指针" class="headerlink" title="一维数组与指针"></a>一维数组与指针</h2><h3 id="1-指针的算术"><a href="#1-指针的算术" class="headerlink" title="1) 指针的算术"></a>1) 指针的算术</h3><ul>
+<li>将一个整型变量加1后，其值将增加1。</li>
+<li>但是，将指针变量（地址的值）加1后，增加的量等于它指向的数据类型的字节数。</li>
+</ul>
+<h3 id="2-数组的地址"><a href="#2-数组的地址" class="headerlink" title="2) 数组的地址"></a>2) 数组的地址</h3><ul>
+<li>a) 数组在内存中占用的空间是连续的。</li>
+<li>b) C++数组名解释为数组的第0个元素的地址。</li>
+<li>c) 数组第0个元素的地址和数组首地址的取值是相同的。</li>
+<li>d) 数组第n个元素的地址是：<code>数组首地址+n</code></li>
+<li>e) C++编译器把 <code>数组名[下标]</code>解释为 <code>*(数组首地址+下标)</code></li>
+</ul>
+<h3 id="3-数组的本质"><a href="#3-数组的本质" class="headerlink" title="3) 数组的本质"></a>3) 数组的本质</h3><ul>
+<li>数组是占用连续空间的一块内存，数组名被解释为数组第0个元素的地址。C++操作内存有两种方法：数组解释法和指针表示法，他们说等价的。</li>
+</ul>
+<h3 id="4）数组名不一定会被解释为地址"><a href="#4）数组名不一定会被解释为地址" class="headerlink" title="4）数组名不一定会被解释为地址"></a>4）数组名不一定会被解释为地址</h3><ul>
+<li>在多数情况下，C++将数组名解释成第0个元素的地址，但是，将sizeof运算符用于数组名，返回的是整个数组的内存空间的字节数。</li>
+<li>可以修改指针的值，但数组是常量，不可修改。</li>
+</ul>
+<h2 id="一维数组用于函数的参数"><a href="#一维数组用于函数的参数" class="headerlink" title="一维数组用于函数的参数"></a>一维数组用于函数的参数</h2><h3 id="1）指针的数组表示"><a href="#1）指针的数组表示" class="headerlink" title="1）指针的数组表示"></a>1）指针的数组表示</h3><ul>
+<li>在C++内部，用指针来处理数组。</li>
+<li>C++编译器把 <code>数组名[下标]</code>解释为 <code>*(数组首地址+下标)</code></li>
+<li>C++编译器把 <code>地址[下标]</code>解释为 <code>*(地址+下标)</code></li>
+</ul>
+<h3 id="2）一维数组用于函数的参数"><a href="#2）一维数组用于函数的参数" class="headerlink" title="2）一维数组用于函数的参数"></a>2）一维数组用于函数的参数</h3><ul>
+<li><p>一维数组用于函数的参数时，只能传数组的地址，并且必须把数组长度也传进去，除非数组中有最后一个元素的标志。</p>
+</li>
+<li><p>书写的方法有两种：</p>
+<p><code>void func(int* arr,int len)</code></p>
+</li>
+</ul>
+<p>        <code>void func(int* arr[],int len)</code></p>
+<ul>
+<li><p>注意：</p>
+<p>在函数中，可以用数组表示法，也可以用指针表示法。</p>
+<p>在函数中，不要对指针名用sizeof运算符，由于64位操作系统指针大小是永远是8，并不是数组占用内存的大小。</p>
+</li>
+</ul>
+<h2 id="用-new-动态创建一维数组"><a href="#用-new-动态创建一维数组" class="headerlink" title="用 new 动态创建一维数组"></a>用 new 动态创建一维数组</h2><p>普通数组在栈上分配内存，栈很小；如果需要存放更多的元素，必须在堆上分配内存。</p>
+<p>动态创建一维数组的语法：<code>数据类型 *指针=new 数据类型[数组长度]</code>；</p>
+<p>释放一维数组的语法：<code>delete []指针;</code></p>
+<p>注意：</p>
+<ul>
+<li>动态创建的数组没有数组名，不能用 sizeof 运算符。</li>
+<li>可以用数组比色法和指针表示法两种方式使用动态创建的数组。</li>
+<li>必须使用<code>&lt;mark&gt;</code>delete[]<code>&lt;/mark&gt;</code>来释放内存（不能只用 <code>delete</code>）。</li>
+<li>不用用<code>&lt;mark&gt;</code>delete[]<code>&lt;/mark&gt;</code>来释放不是<code>&lt;mark&gt;</code>new[]<code>&lt;/mark&gt;</code>分配的内存。</li>
+<li>不要用<code>&lt;mark&gt;</code>delete[]<code>&lt;/mark&gt;</code>释放同一个内存块两次（否则等同于操作野指针）。</li>
+<li>对空指针用<code>&lt;mark&gt;</code>delete[]<code>&lt;/mark&gt;</code>是安全的（释放内存后，应该把指针置空nullptr）。</li>
+<li>声明普通数组的时候，数组长度可以用变量，相当于在栈上动态创建数组，并且不需要释放。</li>
+<li>如果内存不足，调用<code>&lt;mark&gt;</code>new<code>&lt;/mark&gt;</code>会产生异常，导致程序终止；如果在new关键字后面加（<code>&lt;mark&gt;</code>std::nothrow<code>&lt;/mark&gt;</code>）选项，则返回<code>&lt;mark&gt;</code>nullptr<code>&lt;/mark&gt;</code>，不会产生异常。</li>
+<li>为什么用<code>&lt;mark&gt;</code>delete[]<code>&lt;/mark&gt;</code>释放数组的时候，不需要指定数组的大小？因为系统会自动跟踪分配的内存。</li>
+</ul>
+<h2 id="二维数组用于函数的参数"><a href="#二维数组用于函数的参数" class="headerlink" title="二维数组用于函数的参数"></a>二维数组用于函数的参数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span>* p;      <span class="comment">//整型指针。</span></span><br><span class="line"><span class="type">int</span>* p[<span class="number">3</span>];   <span class="comment">//一维整型指针数组，元素是3个整型指针（p[0]、p[1]、p[2]）。</span></span><br><span class="line"><span class="function"><span class="type">int</span>* <span class="title">p</span><span class="params">()</span></span>;    <span class="comment">//函数p的返回值类型是整型的地址。</span></span><br><span class="line"><span class="built_in">int</span> (*p)(<span class="type">int</span>, <span class="type">int</span>);    <span class="comment">//p是函数指针，指针指向的函数具有两个int型的形参。函数的返回值是整型。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1）行指针（数组指针）"><a href="#1）行指针（数组指针）" class="headerlink" title="1）行指针（数组指针）"></a>1）行指针（数组指针）</h3><p>声明行指针的语法：<code>&lt;mark&gt;</code>数据类型 (*行指针名)[行的大小];   //行的大小即数组长度。<code>&lt;/mark&gt;</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//行指针的举例</span></span><br><span class="line"><span class="built_in">int</span>(*p1)[<span class="number">3</span>]; <span class="comment">//p1是行指针，用于指向数组长度为3的int型数组。</span></span><br><span class="line"><span class="built_in">int</span>(*p2)[<span class="number">5</span>]; <span class="comment">//p2是行指针，用于指向数组长度为5的int型数组。</span></span><br><span class="line"><span class="built_in">double</span>(*p3)[<span class="number">5</span>]; <span class="comment">//p3是行指针，用于指向数组长度为5的double型数组。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="image/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/1667564963187.png" alt="1667564963187"></p>
+<p>一维数组名被解释为数组的第0个元素地址。</p>
+<p>对一维数组名取地址得到的是数组的地址，是行地址。</p>
+<h3 id="2）二维数组名是行地址"><a href="#2）二维数组名是行地址" class="headerlink" title="2）二维数组名是行地址"></a>2）二维数组名是行地址</h3><p><code>int bh[2][3] = &#123;&#123;11,12,13&#125;,&#123;21,22,23&#125;&#125;;</code></p>
+<p>bh 是二维数组名，该数组有2元素，每一个元素又是一个<code>&lt;mark&gt;</code>数组长度为3的整型数组<code>&lt;/mark&gt;</code>。</p>
+<p>bh被解释为<code>&lt;mark&gt;</code>数组长度为三的整型数组<code>&lt;/mark&gt;</code>类型的地址。</p>
+<p>如果存放bh的值，要用<code>&lt;mark&gt;</code>数组长度为3的整型数组<code>&lt;/mark&gt;</code>类型的指针。</p>
+<p>int (*p)[3] = bh</p>
+<h3 id="3-把二维数组传递给函数"><a href="#3-把二维数组传递给函数" class="headerlink" title="3)把二维数组传递给函数"></a>3)把二维数组传递给函数</h3><p>如果要把bh传给函数，函数的声明如下：</p>
+<p>void func(int (*p)[3],int len);</p>
+<p>void func(int p[][3],int len);</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://chauity.github.io">ZhiQiang ZHANG</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://chauity.github.io/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/">https://chauity.github.io/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%85%B3%E4%BA%8E%E6%8C%87%E9%92%88%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BA%8B%E5%84%BF/">关于指针的一些事儿</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/11/04/%E5%BB%BA%E7%AB%99%E5%8E%86%E7%A8%8B/"><img class="prev-cover" src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">建站历程</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/03/hello-world/"><img class="next-cover" src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Hello World</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/null" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">ZhiQiang ZHANG</div><div class="author-info__description">热爱编程的小白</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chauity"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/chauity" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">人生若只如初见，何事秋风悲画扇。 等闲变却故人心，却道故人心易变。 骊山语罢清宵半，泪雨霖铃终不怨。 何如薄幸锦衣郎，比翼连枝当日愿。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">指针的基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E5%8F%98%E9%87%8F%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-number">1.1.</span> <span class="toc-text">1）变量的地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F"><span class="toc-number">1.2.</span> <span class="toc-text">2)指针变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%EF%BC%89%E5%AF%B9%E6%8C%87%E9%92%88%E8%B5%8B%E5%80%BC"><span class="toc-number">1.3.</span> <span class="toc-text">3）对指针赋值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%8C%87%E9%92%88%E5%8D%A0%E7%94%A8%E7%9A%84%E5%86%85%E5%AD%98"><span class="toc-number">1.4.</span> <span class="toc-text">4)指针占用的内存</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%87%E9%92%88"><span class="toc-number">2.</span> <span class="toc-text">使用指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E7%94%A8%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">3.</span> <span class="toc-text">指针用于函数的参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B8%B8%E9%87%8F"><span class="toc-number">4.</span> <span class="toc-text">使用常量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E5%AE%8F%E5%B8%B8%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">1）宏常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89const%E4%BF%AE%E9%A5%B0%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.2.</span> <span class="toc-text">2）const修饰的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%B8%B8%E9%87%8F%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">4.3.</span> <span class="toc-text">3)常量的特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%EF%BC%89%E7%A4%BA%E4%BE%8B"><span class="toc-number">4.4.</span> <span class="toc-text">4）示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8const%E4%BF%AE%E9%A5%B0%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">用const修饰指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88"><span class="toc-number">5.1.</span> <span class="toc-text">1）常量指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">2)指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%EF%BC%89%E5%B8%B8%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.3.</span> <span class="toc-text">3）常指针常量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#void-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-number">6.</span> <span class="toc-text">void 关键字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98new%E5%92%8Cdelete"><span class="toc-number">7.</span> <span class="toc-text">动态分配内存new和delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88"><span class="toc-number">8.</span> <span class="toc-text">二级指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E6%8C%87%E9%92%88"><span class="toc-number">9.</span> <span class="toc-text">空指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E4%BD%BF%E7%94%A8%E7%A9%BA%E6%8C%87%E9%92%88%E7%9A%84%E5%90%8E%E6%9E%9C"><span class="toc-number">9.1.</span> <span class="toc-text">1）使用空指针的后果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89C-11%E7%9A%84nullptr"><span class="toc-number">9.2.</span> <span class="toc-text">2）C++ 11的nullptr</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8E%E6%8C%87%E9%92%88"><span class="toc-number">10.</span> <span class="toc-text">野指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E4%B8%8E%E6%8C%87%E9%92%88"><span class="toc-number">11.</span> <span class="toc-text">一维数组与指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8C%87%E9%92%88%E7%9A%84%E7%AE%97%E6%9C%AF"><span class="toc-number">11.1.</span> <span class="toc-text">1) 指针的算术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%95%B0%E7%BB%84%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-number">11.2.</span> <span class="toc-text">2) 数组的地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%95%B0%E7%BB%84%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-number">11.3.</span> <span class="toc-text">3) 数组的本质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%EF%BC%89%E6%95%B0%E7%BB%84%E5%90%8D%E4%B8%8D%E4%B8%80%E5%AE%9A%E4%BC%9A%E8%A2%AB%E8%A7%A3%E9%87%8A%E4%B8%BA%E5%9C%B0%E5%9D%80"><span class="toc-number">11.4.</span> <span class="toc-text">4）数组名不一定会被解释为地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E7%94%A8%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">12.</span> <span class="toc-text">一维数组用于函数的参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E6%8C%87%E9%92%88%E7%9A%84%E6%95%B0%E7%BB%84%E8%A1%A8%E7%A4%BA"><span class="toc-number">12.1.</span> <span class="toc-text">1）指针的数组表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E7%94%A8%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">12.2.</span> <span class="toc-text">2）一维数组用于函数的参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8-new-%E5%8A%A8%E6%80%81%E5%88%9B%E5%BB%BA%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-number">13.</span> <span class="toc-text">用 new 动态创建一维数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E7%94%A8%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="toc-number">14.</span> <span class="toc-text">二维数组用于函数的参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%EF%BC%89%E8%A1%8C%E6%8C%87%E9%92%88%EF%BC%88%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%EF%BC%89"><span class="toc-number">14.1.</span> <span class="toc-text">1）行指针（数组指针）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%EF%BC%89%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E5%90%8D%E6%98%AF%E8%A1%8C%E5%9C%B0%E5%9D%80"><span class="toc-number">14.2.</span> <span class="toc-text">2）二维数组名是行地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%8A%8A%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%BC%A0%E9%80%92%E7%BB%99%E5%87%BD%E6%95%B0"><span class="toc-number">14.3.</span> <span class="toc-text">3)把二维数组传递给函数</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/11/07/VScode+PicGo%20+GitHub%E5%9B%BE%E5%BA%8A----%E8%BE%85%E5%8A%A9%E4%B9%A6%E5%86%99markdown%E6%96%87%E6%A1%A3/" title="VScode+PicGo +GitHub图床----辅助书写markdown文档"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VScode+PicGo +GitHub图床----辅助书写markdown文档"/></a><div class="content"><a class="title" href="/2022/11/07/VScode+PicGo%20+GitHub%E5%9B%BE%E5%BA%8A----%E8%BE%85%E5%8A%A9%E4%B9%A6%E5%86%99markdown%E6%96%87%E6%A1%A3/" title="VScode+PicGo +GitHub图床----辅助书写markdown文档">VScode+PicGo +GitHub图床----辅助书写markdown文档</a><time datetime="2022-11-07T08:17:22.133Z" title="Created 2022-11-07 16:17:22">2022-11-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/04/%E5%BB%BA%E7%AB%99%E5%8E%86%E7%A8%8B/" title="建站历程"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="建站历程"/></a><div class="content"><a class="title" href="/2022/11/04/%E5%BB%BA%E7%AB%99%E5%8E%86%E7%A8%8B/" title="建站历程">建站历程</a><time datetime="2022-11-04T02:38:53.000Z" title="Created 2022-11-04 10:38:53">2022-11-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/" title="指针详解1"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="指针详解1"/></a><div class="content"><a class="title" href="/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/" title="指针详解1">指针详解1</a><time datetime="2022-11-03T04:24:18.000Z" title="Created 2022-11-03 12:24:18">2022-11-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/03/hello-world/" title="Hello World"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World"/></a><div class="content"><a class="title" href="/2022/11/03/hello-world/" title="Hello World">Hello World</a><time datetime="2022-11-03T02:33:38.663Z" title="Created 2022-11-03 10:33:38">2022-11-03</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By ZhiQiang ZHANG</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">繁体</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="桃李春风一杯酒，江湖夜雨十年灯。,蜡烛有心还惜别，替人垂泪到天明。,人归落雁后，思发在花前。,悲歌可以当泣，远望可以当归。,唯有门前镜湖水，春风不改旧时波。,昔我往矣，杨柳依依。今我来思，雨雪霏霏。,故乡何处是，忘了除非醉。,近乡情更怯，不敢问来人。,相见时难别亦难，东风无力百花残。,春风又绿江南岸，明月何时照我还。" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
