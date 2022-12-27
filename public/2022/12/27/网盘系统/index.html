@@ -1,0 +1,370 @@
+<!DOCTYPE html><html lang="zh-cn" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>网盘项目设计 | Chauity の 筆 卷</title><meta name="author" content="ZhiQiang ZHANG"><meta name="copyright" content="ZhiQiang ZHANG"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目介绍项目描述实现一个类似百度网盘的网络存储系统。功能包括文件同步、备份和共享等网络平台云服务，可以随时把照片、音乐、视频、文档等轻松保存到网盘。用户可以多终端下载、管理、分享文件。 系统架构随时随地上传、下载、编辑和分享文件 搜索好友、加好友、好友聊天等  采用C&#x2F;S架构，数据库存储用户信息，磁盘存储用户文件。  技术要点多线程 TCP Socket网络编程 SQLite3数据库 面向对象编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网盘项目设计">
+<meta property="og:url" content="https://chauity.github.io/2022/12/27/%E7%BD%91%E7%9B%98%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="Chauity の 筆 卷">
+<meta property="og:description" content="项目介绍项目描述实现一个类似百度网盘的网络存储系统。功能包括文件同步、备份和共享等网络平台云服务，可以随时把照片、音乐、视频、文档等轻松保存到网盘。用户可以多终端下载、管理、分享文件。 系统架构随时随地上传、下载、编辑和分享文件 搜索好友、加好友、好友聊天等  采用C&#x2F;S架构，数据库存储用户信息，磁盘存储用户文件。  技术要点多线程 TCP Socket网络编程 SQLite3数据库 面向对象编程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg">
+<meta property="article:published_time" content="2022-12-27T06:52:34.000Z">
+<meta property="article:modified_time" content="2022-12-27T07:02:30.076Z">
+<meta property="article:author" content="ZhiQiang ZHANG">
+<meta property="article:tag" content="C++，Qt，SQLite，OOP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg"><link rel="shortcut icon" href="https://cdn.staticaly.com/gh/chauity/images@master/20221104091410.jpg"><link rel="canonical" href="https://chauity.github.io/2022/12/27/%E7%BD%91%E7%9B%98%E7%B3%BB%E7%BB%9F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁体","msgToSimplifiedChinese":"簡體"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":100},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"Traditional Chinese Activated Manually","cht_to_chs":"Simplified Chinese Activated Manually","day_to_night":"Dark Mode Activated Manually","night_to_day":"Light Mode Activated Manually","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '网盘项目设计',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-27 15:02:30'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Chauity の 筆 卷" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/20221107204219.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 学习列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/C/"><i class="fa-fw fas fa-file-code"></i><span> C</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-book"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Chauity の 筆 卷</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 学习列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/C/"><i class="fa-fw fas fa-file-code"></i><span> C</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-book"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">网盘项目设计</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-12-27T06:52:34.000Z" title="Created 2022-12-27 14:52:34">2022-12-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-12-27T07:02:30.076Z" title="Updated 2022-12-27 15:02:30">2022-12-27</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="网盘项目设计"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h1><h2 id="项目描述"><a href="#项目描述" class="headerlink" title="项目描述"></a>项目描述</h2><p>实现一个类似百度网盘的网络存储系统。功能包括文件同步、备份和共享等网络平台云服务，可以随时把照片、音乐、视频、文档等轻松保存到网盘。用户可以多终端下载、管理、分享文件。</p>
+<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><p>随时随地上传、下载、编辑和分享文件</p>
+<p>搜索好友、加好友、好友聊天等</p>
+<p><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/image-20221226152648730.png" alt="image-20221226152648730"></p>
+<p>采用C/S架构，数据库存储用户信息，磁盘存储用户文件。</p>
+<p><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/image-20221226154308191.png" alt="image-20221226154308191"></p>
+<h2 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h2><p>多线程</p>
+<p>TCP Socket网络编程</p>
+<p>SQLite3数据库</p>
+<p>面向对象编程</p>
+<h1 id="数据库安装及表的设计"><a href="#数据库安装及表的设计" class="headerlink" title="数据库安装及表的设计"></a>数据库安装及表的设计</h1><h2 id="数据库安装"><a href="#数据库安装" class="headerlink" title="数据库安装"></a>数据库安装</h2><p><a target="_blank" rel="noopener" href="https://www.runoob.com/sqlite/sqlite-installation.html">参考菜鸟教程安装</a></p>
+<h2 id="数据库表设计"><a href="#数据库表设计" class="headerlink" title="数据库表设计"></a>数据库表设计</h2><p>用户信息表</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>约束条件</th>
+<th>其他</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>int</td>
+<td>primary key</td>
+<td>auto_increment</td>
+</tr>
+<tr>
+<td>name</td>
+<td>varchar(32)</td>
+<td>not null</td>
+<td></td>
+</tr>
+<tr>
+<td>pwd</td>
+<td>varchar(32)</td>
+<td>not null</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>用户好友表</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th align="left">约束条件</th>
+<th>其他</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>int</td>
+<td align="left">primary key</td>
+<td>foreign key</td>
+</tr>
+<tr>
+<td>friendId</td>
+<td>int</td>
+<td align="left">primary key</td>
+<td>foreign key</td>
+</tr>
+</tbody></table>
+<p>创建数据库及数据库表语句</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sqlite3 cloud.db</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> userInfo</span><br><span class="line">   (id <span class="type">integer</span> <span class="keyword">primary</span> key autoincrement,</span><br><span class="line">   name <span class="type">varchar</span>(<span class="number">32</span>),</span><br><span class="line">   pwd <span class="type">varchar</span>(<span class="number">32</span>));</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> friendInfo(id <span class="type">integer</span> <span class="keyword">not</span> <span class="keyword">null</span>,</span><br><span class="line">   friendId interger <span class="keyword">not</span> <span class="keyword">null</span>,</span><br><span class="line">   <span class="keyword">primary</span> key(id, friendId)) ;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="数据库测试"><a href="#数据库测试" class="headerlink" title="数据库测试"></a>数据库测试</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">insert</span> <span class="keyword">into</span> userInfo(name,pwd) <span class="keyword">values</span> (<span class="string">&#x27;jack123&#x27;</span>, <span class="string">&#x27;jack123&#x27;</span>);</span><br><span class="line"> <span class="keyword">insert</span> <span class="keyword">into</span> userInfo(name,pwd) <span class="keyword">values</span> (<span class="string">&#x27;rose456&#x27;</span>, <span class="string">&#x27;rose456&#x27;</span>);</span><br><span class="line"> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> userInfo;</span><br><span class="line"><span class="number">1</span><span class="operator">|</span>jack123<span class="operator">|</span>jack123</span><br><span class="line"><span class="number">2</span><span class="operator">|</span>rose456<span class="operator">|</span>rose456</span><br></pre></td></tr></table></figure>
+
+<h1 id="客户端服务器的搭建"><a href="#客户端服务器的搭建" class="headerlink" title="客户端服务器的搭建"></a>客户端服务器的搭建</h1><h2 id="客户端实现"><a href="#客户端实现" class="headerlink" title="客户端实现"></a>客户端实现</h2><ul>
+<li><strong>资源文件</strong></li>
+</ul>
+<p>将服务器ip和port信息填入配置文件中</p>
+<p>将配置文件作为资源文件添加到资源文件中</p>
+<p>程序运行时加载配置文件中的数据</p>
+<h3 id="解析配置ip和port文件"><a href="#解析配置ip和port文件" class="headerlink" title="解析配置ip和port文件"></a>解析配置ip和port文件</h3><ul>
+<li>打开Qt，创建名为 <strong>TcpClient</strong> 新的项目，继承 <strong>QWidget</strong> 父类，创建过程省略</li>
+</ul>
+<p><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/image-20221226204203076.png" alt="image-20221226204203076"></p>
+<ul>
+<li>在 <strong>TcpClient</strong> 目录下新建名为 <strong>client.config</strong> 配置文件 , 其ip和port内容如下图</li>
+</ul>
+<p><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/image-20221226204936557.png" alt="image-20221226204936557"></p>
+<ul>
+<li>在项目中加载该配置文件</li>
+</ul>
+<p>鼠标点击项目右键 –&gt; 添加新文件 –&gt; 选择Qt –&gt; 选择Qt Resource File –&gt; 名称填config -&gt; 最后完成</p>
+<p>鼠标右键Resources的 <strong>config.qrc</strong> –&gt; Add Prefix –&gt;Prefix 里填写 <strong>/</strong> –&gt; ok –&gt; 右键 <strong>/</strong> –&gt; 添加现有文件 –&gt; 找到 <strong>client.config</strong> 并添加</p>
+<ul>
+<li>编写代码解析文件中的字符串</li>
+</ul>
+<p>tcpclient.h: 其中 <strong>TcpClient</strong> 类自定义成员：</p>
+<p>公有成员方法 loadConfig() ,私有成员变量 m_strIP 和 m_usPort;</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">loadConfig</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	QString m_strIP;    <span class="comment">// 字符串</span></span><br><span class="line">    quint16 m_usPort;   <span class="comment">// 无符号16位整形</span></span><br></pre></td></tr></table></figure>
+
+<p>在loadConfig方法上按住<strong>Alt+Enter</strong>，在生成其对应的方法实现</p>
+<p>1.加载配置文件</p>
+<p>2.只读方式打开文件 </p>
+<p>3.循环获取文件内容 </p>
+<p>4.替换字符串 （\r\n 替换为 空格）</p>
+<p>5.分割获得解析的字符串 （以 空格 为分隔符）</p>
+<p>完整方法实现如下</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">TcpClient::loadConfig</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//1.加载配置文件</span></span><br><span class="line">    <span class="function">QFile <span class="title">file</span><span class="params">(<span class="string">&quot;:/client.config&quot;</span>)</span></span>;</span><br><span class="line">    <span class="comment">//2.只读方式打开文件 </span></span><br><span class="line">    <span class="keyword">if</span>(file.<span class="built_in">open</span>(QIODevice::ReadOnly))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//3.循环获取文件内容 </span></span><br><span class="line">        QByteArray baData = file.<span class="built_in">readAll</span>();</span><br><span class="line">        QString strData = baData.<span class="built_in">toStdString</span>().<span class="built_in">c_str</span>();</span><br><span class="line">        file.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 4.将\r\n 替换为 空格字符串</span></span><br><span class="line">        strData.<span class="built_in">replace</span>(<span class="string">&quot;\r\n&quot;</span>,<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="comment">// 5.以空格进行分割</span></span><br><span class="line">        QStringList strList = strData.<span class="built_in">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        m_strIP = strList.<span class="built_in">at</span>(<span class="number">0</span>);</span><br><span class="line">        m_usPort = strList.<span class="built_in">at</span>(<span class="number">1</span>).<span class="built_in">toUShort</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        QMessageBox::<span class="built_in">critical</span>(<span class="keyword">this</span>, <span class="string">&quot;open config&quot;</span>, <span class="string">&quot;open config failed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Tcp-客户端连接服务器"><a href="#Tcp-客户端连接服务器" class="headerlink" title="Tcp 客户端连接服务器"></a>Tcp 客户端连接服务器</h2><p>原理图：</p>
+<p><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/image-20221227101318735.png" alt="image-20221227101318735"></p>
+<h3 id="测试连接服务器实现"><a href="#测试连接服务器实现" class="headerlink" title="测试连接服务器实现"></a>测试连接服务器实现</h3><p>1.TcpClient.pro 添加network模块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QT += core gui network</span><br></pre></td></tr></table></figure>
+
+<p>2.私有变量添加 <strong>m_tcpSocket</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 连接服务器，与服务器进行通信</span></span><br><span class="line">QTcpSocket m_tcpSocket;</span><br></pre></td></tr></table></figure>
+
+<p>3.TcpClient 的 构造方法中调用下列函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">loadConfig</span>();</span><br><span class="line"><span class="built_in">connect</span>(&amp;m_tcpSocket, <span class="built_in">SIGNAL</span>(<span class="built_in">connected</span>()),</span><br><span class="line">           <span class="keyword">this</span>, <span class="built_in">SLOT</span>(<span class="built_in">showConnect</span>()));</span><br><span class="line"><span class="comment">// 连接服务器</span></span><br><span class="line">m_tcpSocket.<span class="built_in">connectToHost</span>(<span class="built_in">QHostAddress</span>(m_strIP), m_usPort);</span><br></pre></td></tr></table></figure>
+
+<p>完整代码实现：</p>
+<p>tcpclient.h</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> TCPCLIENT_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TCPCLIENT_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QWidget&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QFile&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QTcpSocket&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Ui &#123;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TcpClient</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TcpClient</span> : <span class="keyword">public</span> QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">TcpClient</span><span class="params">(QWidget *parent = <span class="number">0</span>)</span></span>;</span><br><span class="line">    ~<span class="built_in">TcpClient</span>();</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">loadConfig</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> slots:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">showConnect</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Ui::TcpClient *ui;</span><br><span class="line">    QString m_strIP;    <span class="comment">// 字符串</span></span><br><span class="line">    quint16 m_usPort;   <span class="comment">// 无符号16位整形</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接服务器，与服务器进行通信</span></span><br><span class="line">    QTcpSocket m_tcpSocket;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// TCPCLIENT_H</span></span></span><br></pre></td></tr></table></figure>
+
+<p>tcpclient.cpp</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;tcpclient.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ui_tcpclient.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QByteArray&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QMessageBox&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QHostAddress&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">TcpClient::<span class="built_in">TcpClient</span>(QWidget *parent) :</span><br><span class="line">    <span class="built_in">QWidget</span>(parent),</span><br><span class="line">    <span class="built_in">ui</span>(<span class="keyword">new</span> Ui::TcpClient)</span><br><span class="line">&#123;</span><br><span class="line">    ui-&gt;<span class="built_in">setupUi</span>(<span class="keyword">this</span>);</span><br><span class="line">    <span class="built_in">loadConfig</span>();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">connect</span>(&amp;m_tcpSocket, <span class="built_in">SIGNAL</span>(<span class="built_in">connected</span>()),</span><br><span class="line">           <span class="keyword">this</span>, <span class="built_in">SLOT</span>(<span class="built_in">showConnect</span>()));</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接服务器</span></span><br><span class="line">    m_tcpSocket.<span class="built_in">connectToHost</span>(<span class="built_in">QHostAddress</span>(m_strIP), m_usPort);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">TcpClient::~<span class="built_in">TcpClient</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> ui;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">TcpClient::loadConfig</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QFile <span class="title">file</span><span class="params">(<span class="string">&quot;:/client.config&quot;</span>)</span></span>;</span><br><span class="line">    <span class="keyword">if</span>(file.<span class="built_in">open</span>(QIODevice::ReadOnly))</span><br><span class="line">    &#123;</span><br><span class="line">        QByteArray baData = file.<span class="built_in">readAll</span>();</span><br><span class="line">        QString strData = baData.<span class="built_in">toStdString</span>().<span class="built_in">c_str</span>();</span><br><span class="line">        <span class="comment">// qDebug() &lt;&lt; strData;</span></span><br><span class="line">        file.<span class="built_in">close</span>();</span><br><span class="line">        <span class="comment">// 将\r\n 替换为 空格字符串</span></span><br><span class="line">        strData.<span class="built_in">replace</span>(<span class="string">&quot;\r\n&quot;</span>,<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="comment">// qDebug() &lt;&lt; strData;</span></span><br><span class="line">        <span class="comment">// 以空格进行分割</span></span><br><span class="line">        QStringList strList = strData.<span class="built_in">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="comment">// 测试打印字符串数组</span></span><br><span class="line">        <span class="comment">// for(int i = 0; i &lt; strList.size(); i++) qDebug() &lt;&lt; &quot;---&gt;&quot; &lt;&lt; strList[i];</span></span><br><span class="line">        m_strIP = strList.<span class="built_in">at</span>(<span class="number">0</span>);</span><br><span class="line">        m_usPort = strList.<span class="built_in">at</span>(<span class="number">1</span>).<span class="built_in">toUShort</span>();</span><br><span class="line">        <span class="comment">// 打印解析的端口</span></span><br><span class="line">        <span class="comment">//qDebug() &lt;&lt; &quot;ip:&quot; &lt;&lt; m_strIP &lt;&lt; &quot;,port:&quot; &lt;&lt; m_usPort;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        QMessageBox::<span class="built_in">critical</span>(<span class="keyword">this</span>, <span class="string">&quot;open config&quot;</span>, <span class="string">&quot;open config failed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">TcpClient::showConnect</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    QMessageBox::<span class="built_in">information</span>(<span class="keyword">this</span>, <span class="string">&quot;连接服务器&quot;</span>, <span class="string">&quot;连接服务器成功&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="服务器实现"><a href="#服务器实现" class="headerlink" title="服务器实现"></a>服务器实现</h2><ul>
+<li><p>首先新建名为 <strong>TcpServer</strong> 的项目</p>
+</li>
+<li><p>在TcpServer.pro 里面添加 network 模块</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QT += core gui network</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>新建类<strong>MyTcpServer</strong>，继承自<strong>QTcpServer</strong></li>
+<li>新增 <strong>server.config</strong> 文件，并添加到 <strong>TcpServer</strong> 中</li>
+</ul>
+<p><strong>接收客户端的连接</strong></p>
+<p>QTcpServer 介绍与派生，监听及吸收客户端的连接</p>
+<p>QTcpSocket 介绍与派生，和客户端数据交互</p>
+<p>1.加载配置文件、打开数据库</p>
+<p>2.QTcpServer 监听</p>
+<p>3.循环接收客户端的连接</p>
+<p>4.获取新QTcpSocket</p>
+<p>5.与客户端数据交互及数据库操作</p>
+<p>直接沾代码：</p>
+<p>mytcpserver.h</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> MYTCPSERVER_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MYTCPSERVER_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QTcpServer&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyTcpServer</span> : <span class="keyword">public</span> QTcpServer</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT    <span class="comment">//支持信号槽</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MyTcpServer</span>();</span><br><span class="line">    <span class="comment">// 单例模式</span></span><br><span class="line">    <span class="function"><span class="type">static</span> MyTcpServer &amp;<span class="title">getInstence</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">incomingConnection</span><span class="params">(qintptr socketDescriptor)</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// MYTCPSERVER_H</span></span></span><br></pre></td></tr></table></figure>
+
+<p>mytcpserver.cpp</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mytcpserver.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">MyTcpServer::<span class="built_in">MyTcpServer</span>()</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="function">MyTcpServer &amp;<span class="title">MyTcpServer::getInstence</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">static</span> MyTcpServer instance;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">MyTcpServer::incomingConnection</span><span class="params">(qintptr socketDescriptor)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">qDebug</span>() &lt;&lt; <span class="string">&quot;new client connected&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>tcpserver.h</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> TCPSERVER_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TCPSERVER_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QWidget&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Ui &#123;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TcpServer</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TcpServer</span> : <span class="keyword">public</span> QWidget</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">TcpServer</span><span class="params">(QWidget *parent = <span class="number">0</span>)</span></span>;</span><br><span class="line">    ~<span class="built_in">TcpServer</span>();</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">loadConfig</span><span class="params">()</span></span>;</span><br><span class="line">    QString m_strIP;    <span class="comment">// 字符串</span></span><br><span class="line">    quint16 m_usPort;   <span class="comment">// 无符号16位整形</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    Ui::TcpServer *ui;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// TCPSERVER_H</span></span></span><br></pre></td></tr></table></figure>
+
+<p>tcpserver.cpp</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;tcpserver.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;ui_tcpserver.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;mytcpserver.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QFile&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QByteArray&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QMessageBox&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;QHostAddress&gt;</span></span></span><br><span class="line"></span><br><span class="line">TcpServer::<span class="built_in">TcpServer</span>(QWidget *parent) :</span><br><span class="line">    <span class="built_in">QWidget</span>(parent),</span><br><span class="line">    <span class="built_in">ui</span>(<span class="keyword">new</span> Ui::TcpServer)</span><br><span class="line">&#123;</span><br><span class="line">    ui-&gt;<span class="built_in">setupUi</span>(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">loadConfig</span>();</span><br><span class="line"></span><br><span class="line">    MyTcpServer::<span class="built_in">getInstence</span>().<span class="built_in">listen</span>(<span class="built_in">QHostAddress</span>(m_strIP), m_usPort);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">TcpServer::~<span class="built_in">TcpServer</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">delete</span> ui;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">TcpServer::loadConfig</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">QFile <span class="title">file</span><span class="params">(<span class="string">&quot;:/server.config&quot;</span>)</span></span>;</span><br><span class="line">    <span class="keyword">if</span>(file.<span class="built_in">open</span>(QIODevice::ReadOnly))</span><br><span class="line">    &#123;</span><br><span class="line">        QByteArray baData = file.<span class="built_in">readAll</span>();</span><br><span class="line">        QString strData = baData.<span class="built_in">toStdString</span>().<span class="built_in">c_str</span>();</span><br><span class="line">        file.<span class="built_in">close</span>();</span><br><span class="line">        strData.<span class="built_in">replace</span>(<span class="string">&quot;\r\n&quot;</span>,<span class="string">&quot; &quot;</span>);</span><br><span class="line">        QStringList strList = strData.<span class="built_in">split</span>(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        m_strIP = strList.<span class="built_in">at</span>(<span class="number">0</span>);</span><br><span class="line">        m_usPort = strList.<span class="built_in">at</span>(<span class="number">1</span>).<span class="built_in">toUShort</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        QMessageBox::<span class="built_in">critical</span>(<span class="keyword">this</span>, <span class="string">&quot;open config&quot;</span>, <span class="string">&quot;open config failed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在就可以同时开启TcpClient和TcpServer项目了，实际连接效果如下图</p>
+<p><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/image-20221227141734463.png" alt="image-20221227141734463"></p>
+<h1 id="通讯协议设计"><a href="#通讯协议设计" class="headerlink" title="通讯协议设计"></a>通讯协议设计</h1><h2 id="弹性结构体"><a href="#弹性结构体" class="headerlink" title="弹性结构体"></a>弹性结构体</h2><p>此小节为示例，可不做</p>
+<p><strong>PDU</strong>是<strong>protocal data unity</strong>的简写，是协议数据单元的意思</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">PDU</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line">    <span class="type">int</span> c;</span><br><span class="line">    <span class="type">int</span> d[];</span><br><span class="line">&#125;PDU;</span><br></pre></td></tr></table></figure>
+
+<p>使用数组实现 结构体的大小 弹性申请空间</p>
+<p>实例代码：main.c</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">PDU</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> a;</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line">    <span class="type">int</span> c;</span><br><span class="line">    <span class="type">int</span> d[];</span><br><span class="line">&#125;PDU;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld\n&quot;</span>, <span class="built_in">sizeof</span>(PDU));</span><br><span class="line">    <span class="comment">// 动态申请空间</span></span><br><span class="line">    PDU* pdu = (PDU*) <span class="built_in">malloc</span>((<span class="built_in">sizeof</span>(PDU)) + (<span class="number">100</span>*<span class="built_in">sizeof</span>(<span class="type">int</span>)));</span><br><span class="line">    <span class="comment">// 赋值</span></span><br><span class="line">    pdu-&gt;a = <span class="number">90</span>;</span><br><span class="line">    pdu-&gt;b = <span class="number">80</span>;</span><br><span class="line">    pdu-&gt;c = <span class="number">70</span>;</span><br><span class="line">    <span class="built_in">memcpy</span>(pdu-&gt;d, <span class="string">&quot;You jump I jump&quot;</span>, <span class="number">16</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a=%d, b=%d, c=%d, d=%s&quot;</span>, pdu-&gt;a, pdu-&gt;b, pdu-&gt;c, (<span class="type">char</span>*) pdu-&gt;d);</span><br><span class="line">    <span class="comment">// 释放空间</span></span><br><span class="line">    <span class="built_in">free</span>(pdu);</span><br><span class="line">    pdu = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>弹性结构体原理 =&gt; 结构体最后一个成员为 int caData[];</li>
+</ul>
+<h2 id="通讯协议设计-1"><a href="#通讯协议设计-1" class="headerlink" title="通讯协议设计"></a>通讯协议设计</h2><ul>
+<li>协议设计</li>
+</ul>
+<p>1.总的消息大小</p>
+<p>2.消息类型</p>
+<p>3.实际消息大小</p>
+<p>4.实际消息</p>
+<table>
+<thead>
+<tr>
+<th>总的消息大小</th>
+<th>消息类型</th>
+<th>实际消息</th>
+<th>实际消息大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>uiPDULEN</td>
+<td>uiMsgType</td>
+<td>caData[32]</td>
+<td>uiMsgLen</td>
+</tr>
+</tbody></table>
+<h2 id="数据收发测试"><a href="#数据收发测试" class="headerlink" title="数据收发测试"></a>数据收发测试</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://chauity.github.io">ZhiQiang ZHANG</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://chauity.github.io/2022/12/27/%E7%BD%91%E7%9B%98%E7%B3%BB%E7%BB%9F/">https://chauity.github.io/2022/12/27/%E7%BD%91%E7%9B%98%E7%B3%BB%E7%BB%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/C-%EF%BC%8CQt%EF%BC%8CSQLite%EF%BC%8COOP/">C++，Qt，SQLite，OOP</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/12/22/%E5%B0%81%E8%A3%85POW%E5%87%BD%E6%95%B0/"><img class="next-cover" src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">封装的库函数函数</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.staticaly.com/gh/chauity/images@master/blog/pictures/20221107204219.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">ZhiQiang ZHANG</div><div class="author-info__description">热爱编程的小白</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chauity"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/chauity" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">人生若只如初见，何事秋风悲画扇。 等闲变却故人心，却道故人心易变。 骊山语罢清宵半，泪雨霖铃终不怨。 何如薄幸锦衣郎，比翼连枝当日愿。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">项目介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">项目描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">系统架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E8%A6%81%E7%82%B9"><span class="toc-number">1.3.</span> <span class="toc-text">技术要点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%8F%8A%E8%A1%A8%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">数据库安装及表的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">数据库安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.2.</span> <span class="toc-text">数据库表设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%B5%8B%E8%AF%95"><span class="toc-number">2.3.</span> <span class="toc-text">数据库测试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">客户端服务器的搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.1.</span> <span class="toc-text">客户端实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%9E%90%E9%85%8D%E7%BD%AEip%E5%92%8Cport%E6%96%87%E4%BB%B6"><span class="toc-number">3.1.1.</span> <span class="toc-text">解析配置ip和port文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tcp-%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">Tcp 客户端连接服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.2.1.</span> <span class="toc-text">测试连接服务器实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.3.</span> <span class="toc-text">服务器实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE%E8%AE%BE%E8%AE%A1"><span class="toc-number">4.</span> <span class="toc-text">通讯协议设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%B9%E6%80%A7%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-number">4.1.</span> <span class="toc-text">弹性结构体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%AE%AF%E5%8D%8F%E8%AE%AE%E8%AE%BE%E8%AE%A1-1"><span class="toc-number">4.2.</span> <span class="toc-text">通讯协议设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E5%8F%91%E6%B5%8B%E8%AF%95"><span class="toc-number">4.3.</span> <span class="toc-text">数据收发测试</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/27/%E7%BD%91%E7%9B%98%E7%B3%BB%E7%BB%9F/" title="网盘项目设计"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="网盘项目设计"/></a><div class="content"><a class="title" href="/2022/12/27/%E7%BD%91%E7%9B%98%E7%B3%BB%E7%BB%9F/" title="网盘项目设计">网盘项目设计</a><time datetime="2022-12-27T06:52:34.000Z" title="Created 2022-12-27 14:52:34">2022-12-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/22/%E5%B0%81%E8%A3%85POW%E5%87%BD%E6%95%B0/" title="封装的库函数函数"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="封装的库函数函数"/></a><div class="content"><a class="title" href="/2022/12/22/%E5%B0%81%E8%A3%85POW%E5%87%BD%E6%95%B0/" title="封装的库函数函数">封装的库函数函数</a><time datetime="2022-12-22T11:53:12.000Z" title="Created 2022-12-22 19:53:12">2022-12-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/10/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" title="套接字(Socket)---网络编程"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="套接字(Socket)---网络编程"/></a><div class="content"><a class="title" href="/2022/11/10/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" title="套接字(Socket)---网络编程">套接字(Socket)---网络编程</a><time datetime="2022-11-10T09:59:13.180Z" title="Created 2022-11-10 17:59:13">2022-11-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/09/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" title="冒泡排序"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="冒泡排序"/></a><div class="content"><a class="title" href="/2022/11/09/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/" title="冒泡排序">冒泡排序</a><time datetime="2022-11-09T12:21:09.000Z" title="Created 2022-11-09 20:21:09">2022-11-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/11/09/%E9%9A%8F%E8%AE%B0/" title="数组的逆置"><img src="https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="数组的逆置"/></a><div class="content"><a class="title" href="/2022/11/09/%E9%9A%8F%E8%AE%B0/" title="数组的逆置">数组的逆置</a><time datetime="2022-11-09T01:10:07.000Z" title="Created 2022-11-09 09:10:07">2022-11-09</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://cdn.staticaly.com/gh/chauity/images@master/347e24821bcd4fc5b513a53cbcaa0b3a (1).jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By ZhiQiang ZHANG</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Toggle Between Traditional Chinese And Simplified Chinese">繁体</button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const $mermaidWrap = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaidWrap.length) {
+    window.runMermaid = () => {
+      window.loadMermaid = true
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+      Array.from($mermaidWrap).forEach((item, index) => {
+        const mermaidSrc = item.firstElementChild
+        const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+        const mermaidID = 'mermaid-' + index
+        const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+        mermaid.mermaidAPI.render(mermaidID, mermaidDefinition, (svgCode) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svgCode)
+        })
+      })
+    }
+
+    const loadMermaid = () => {
+      window.loadMermaid ? runMermaid() : getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaid)
+    }
+
+    window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+  }
+})()</script></div><script defer="defer" id="fluttering_ribbon" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="true" data-text="桃李春风一杯酒，江湖夜雨十年灯。,蜡烛有心还惜别，替人垂泪到天明。,人归落雁后，思发在花前。,悲歌可以当泣，远望可以当归。,唯有门前镜湖水，春风不改旧时波。,昔我往矣，杨柳依依。今我来思，雨雪霏霏。,故乡何处是，忘了除非醉。,近乡情更怯，不敢问来人。,相见时难别亦难，东风无力百花残。,春风又绿江南岸，明月何时照我还。" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

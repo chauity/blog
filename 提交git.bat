@@ -1,0 +1,10 @@
+del /s/q node_modules
+git init
+git add .
+git commit -m "first commit"
+git branch -M master
+git remote add origin git@github.com:chauity/blog.git
+git push -u origin master
+
+pause
+
