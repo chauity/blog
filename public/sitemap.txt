@@ -1,3 +1,4 @@
+https://chauity.github.io/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/
 https://chauity.github.io/2022/12/27/%E7%BD%91%E7%9B%98%E7%B3%BB%E7%BB%9F/
 https://chauity.github.io/about/index.html
 https://chauity.github.io/2022/12/22/%E5%B0%81%E8%A3%85POW%E5%87%BD%E6%95%B0/
@@ -10,7 +11,6 @@ https://chauity.github.io/link/index.html
 https://chauity.github.io/categories/index.html
 https://chauity.github.io/C/index.html
 https://chauity.github.io/2022/11/04/%E5%BB%BA%E7%AB%99%E5%8E%86%E7%A8%8B/
-https://chauity.github.io/2022/11/03/%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A31/
 https://chauity.github.io/2022/11/08/cpp-fi-const/
 https://chauity.github.io/2022/11/09/C-%E5%90%8E%E7%AB%AF%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/
 https://chauity.github.io/2022/11/03/hello-world/
