@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
+        <div class="brand">
+            <div class="title center-align">
+                <% if (config.subtitle && config.subtitle.length> 0) { %>
+                    <%= config.subtitle %>
+                        <% } else { %>
+                            subtitle
+                            <% } %>
+            </div>
+
+            <div class="description center-align">
+                <% if (theme.subtitle.enable) { %>
+                    <span id="subtitle"></span>
+                    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
+                    <script>
+                        var typed = new Typed("#subtitle", {
+                            strings: ['<%= theme.subtitle.sub1 %>',   '<%= theme.subtitle.sub2 %>',   '<%= theme.subtitle.sub3 %>',   '<%= theme.subtitle.sub4 %>',   '<%= theme.subtitle.sub5 %>',   '<%= theme.subtitle.sub6 %>',   '<%= theme.subtitle.sub7 %>',   '<%= theme.subtitle.sub8 %>',   '<%= theme.subtitle.sub9 %>',   '<%= theme.subtitle.sub10 %>',   '<%= theme.subtitle.sub11 %>',   '<%= theme.subtitle.sub12 %>',   '<%= theme.subtitle.sub13 %>',   '<%= theme.subtitle.sub14 %>',   '<%= theme.subtitle.sub15 %>',   '<%= theme.subtitle.sub16 %>',   '<%= theme.subtitle.sub17 %>',   '<%= theme.subtitle.sub18 %>',   '<%= theme.subtitle.sub19 %>',   '<%= theme.subtitle.sub20 %>',   '<%= theme.subtitle.sub21 %>',   '<%= theme.subtitle.sub22 %>',   '<%= theme.subtitle.sub23 %>',   '<%= theme.subtitle.sub24 %>',   '<%= theme.subtitle.sub25 %>',   '<%= theme.subtitle.sub26 %>',   '<%= theme.subtitle.sub27 %>',   '<%= theme.subtitle.sub28 %>',   '<%= theme.subtitle.sub29 %>',   '<%= theme.subtitle.sub30 %>',   '<%= theme.subtitle.sub31 %>',   '<%= theme.subtitle.sub32 %>',   '<%= theme.subtitle.sub33 %>',   '<%= theme.subtitle.sub34 %>',   '<%= theme.subtitle.sub35 %>',   '<%= theme.subtitle.sub36 %>',   '<%= theme.subtitle.sub37 %>',   '<%= theme.subtitle.sub38 %>',   '<%= theme.subtitle.sub39 %>',   '<%= theme.subtitle.sub40 %>',   '<%= theme.subtitle.sub41 %>',   '<%= theme.subtitle.sub42 %>',    ],
+                            startDelay: <%= theme.subtitle.startDelay %>,
+                            typeSpeed: <%= theme.subtitle.typeSpeed %>,
+                            loop: <%= theme.subtitle.loop %>,
+                            backSpeed: <%= theme.subtitle.backSpeed %>,
+                            showCursor: <%= theme.subtitle.showCursor %>
+                    });
+                    </script>
+                    <% } else { %>
+                        <%= config.description %>
+                            <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% if (theme.banner.enable) { %>
+    <script>
+        // 每天切换 banner 图.  Switch banner image every day.
+        var bannerUrl = "<%- theme.jsDelivr.url %><%- url_for('https://gcore.jsdelivr.net/gh/chauity/xximgxx/banner/') %>" + new Date().getDate() + '.jpg';
+        $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
+    </script>
+    <% } else { %>
+        <script>
+            $('.bg-cover').css('background-image', 'url(<%- theme.jsDelivr.url %><%- url_for('https://gcore.jsdelivr.net/gh/chauity/xximgxx/banner/10.jpg') %>)');
+        </script>
+        <% } %>
